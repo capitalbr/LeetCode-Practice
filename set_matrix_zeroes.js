@@ -39,8 +39,10 @@
 
 // MY SOLUTION:  O(m*n) time, O(m+n) space
 // worst case scenario my two objects will use O(m+n) space.
-// OPTIMIZATION: replace objects with variables and do everything on the first
-// pass, giving me constant space 0(1) and 0(m*n) time;
+// OPTIMIZATION: don't use objects and keep track of rows / columns with flags
+// you set within the original matrix when a 0 is hit.  Flags will be at the
+// beggining of the row and column where the 0 was located, 
+// giving me constant space 0(1) and 0(m*n) time;
 
 var setZeroes = function (matrix) {
   columnsWithZero = {}; // row idx's that need a zero
