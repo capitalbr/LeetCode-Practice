@@ -1,6 +1,45 @@
-// 1st solution - with naive approach, sort then look up kth element
-// 2nd solution - priority queue
-// 3rd solution - selection algorithm (based on the partion method)
+// 1st possibility - with naive approach, sort then look up kth element - too slow
+// 2nd possibility - priority queue - not efficient enough
+// 3rd possibility - selection algorithm (based on the partion method)
+
+
+
+// QUICK SEARCH  >> next will implement partition helper to get O(1) space complexity
+// Time: O(N)
+// Space: O(N) because I didn't mutate the input
+// O(N) time because you cut the input on average in half each time with randomized
+// pivot makes it O(N) because even though you are doing log N iterations each
+// workload is decreased by a factor of two. 
+// O(N + N-1 + N-2 ... to infinity) === 2N.  So it's O(2N) or O(N);
+const randomNum = (max) => {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+var findKthLargest = function (nums, k) {
+  let arr = nums.slice(0);
+  while (true) {
+    let pivot = arr[randomNum(arr.length)];
+    let left = [];
+    let right = [];
+    arr.forEach((ele, idx) => {
+      if (ele < pivot) {
+        left.push(ele);
+      } else if (ele >= pivot && arr.indexOf(pivot) !== idx) {
+        right.push(ele);
+      }
+    })
+    if (left.length === arr.length - k) return pivot;
+    if (left.length > arr.length - k) {
+      arr = left;
+      k -= right.length + 1;
+    } else {
+      arr = right;
+    }
+  }
+};
+
+console.log(`quick search     ${findKthLargest([3, 2, 1, 5, 6, 4], 2)}`);
+
 
 
 // NAIVE APPROACH SORT FIRST THEN LOOK UP
@@ -30,9 +69,8 @@ const merged = (left, right) => {
   return merged.concat(left, right);
 }
 
-var findKthLargest = function (nums, k) {
-
+var findKthLargestNaive = function (nums, k) {
   return merge(nums)[nums.length - k];
 };
 
-console.log(findKthLargest([3, 2, 1, 5, 6, 4], 2));
+console.log(`naive sort       ${findKthLargestNaive([3, 2, 1, 5, 6, 4], 2)}`);
